@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DealDekho - Best Deals on Fashion & Electronics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  :root { --primary:#ff3e6c; --primary-dark:#e02a58; --ink:#1a1a1a; --soft:#fff1f4; }
+  body { font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:#fafafa; }
+  .navbar { background:var(--primary); }
+  .navbar-brand { font-weight:700; letter-spacing:.2px; }
+  .hero { background:var(--soft); }
+  .hero .search { max-width:520px; }
+  .btn-primary { background:var(--primary); border-color:var(--primary); font-weight:600; }
+  .btn-primary:hover, .btn-primary:focus { background:var(--primary-dark); border-color:var(--primary-dark); }
+  .pill { border:1px solid #ddd; background:#fff; border-radius:999px; padding:.4rem 1rem; font-size:.9rem; font-weight:600; color:var(--ink); }
+  .pill.active { background:var(--primary); border-color:var(--primary); color:#fff; }
+  .pill:focus-visible, .btn:focus-visible { outline:3px solid #1a1a1a; outline-offset:2px; }
+  .product-card { border:1px solid #eee; border-radius:12px; overflow:hidden; height:100%; transition:transform .2s, box-shadow .2s; }
+  .product-card:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,.08); }
+  .thumb { aspect-ratio:4/3; background:var(--soft); display:flex; align-items:center; justify-content:center; font-size:2.5rem; position:relative; }
+  .thumb img { width:100%; height:100%; object-fit:cover; }
+  .badge-off { position:absolute; top:10px; left:10px; background:var(--primary); color:#fff; font-size:.8rem; font-weight:700; padding:.25rem .6rem; border-radius:6px; }
+  .store { font-size:.8rem; color:#6c757d; }
+  .price { font-size:1.15rem; font-weight:700; }
+  #empty { display:none; }
+  @media (prefers-reduced-motion: reduce) { .product-card { transition:none; } }
+</style>
+</head>
+<body>
+<nav class="navbar navbar-dark">
+  <div class="container"><a class="navbar-brand" href="#">DealDekho</a></div>
+</nav>
+
+<header class="hero py-5 text-center">
+  <div class="container">
+    <h1 class="h2 fw-bold">Best deals on top brands</h1>
+    <p class="text-muted mb-4">Fashion, electronics and more. Prices change fast, so grab it early.</p>
+    <div class="input-group search mx-auto">
+      <input id="q" type="search" class="form-control" placeholder="Search for products..." aria-label="Search products">
+    </div>
+  </div>
+</header>
+
+<main class="container py-4">
+  <div id="filters" class="d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Categories">
+    <button class="pill active" data-cat="all">All Deals</button>
+    <button class="pill" data-cat="top">Top Deals</button>
+    <button class="pill" data-cat="Fashion">Fashion</button>
+    <button class="pill" data-cat="Electronics">Electronics</button>
+  </div>
+
+  <div id="grid" class="row g-4"></div>
+  <p id="empty" class="text-center text-muted py-5">No deals match your search. Try another word.</p>
+
+  <p class="text-muted small mt-5 mb-0">Disclosure: some links on this page are affiliate links. We may earn a small commission if you buy, at no extra cost to you. Prices and discounts can change on the store's site.</p>
+</main>
+
+<script>
+  // Add new deals here. "img" is optional: paste a direct image URL, or leave it empty.
+  const deals = [
+    { name:"T-Shirt",  cat:"Fashion",     price:"₹599",   off:60, store:"Myntra",   icon:"👕", img:"", url:"https://myntr.it/Y41CFXN" },
+    { name:"Watch",    cat:"Fashion",     price:"₹1,999", off:50, store:"Myntra",   icon:"⌚", img:"", url:"https://myntr.it/1aNVZHI" },
+    { name:"Earbuds",  cat:"Electronics", price:"₹1,299", off:40, store:"EarnKaro", icon:"🎧", img:"", url:"https://ekaro.in/enkr2024cPZ3wZ" }
+  ];
+
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  const q = document.getElementById('q');
+  let cat = 'all';
+
+  function card(d) {
+    const media = d.img
+      ? `<img src="${d.img}" alt="${d.name}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${d.icon}'))">`
+      : d.icon;
+    return `<div class="col-6 col-md-4 col-lg-3">
+      <div class="card product-card">
+        <div class="thumb">${media}<span class="badge-off">${d.off}% off</span></div>
+        <div class="card-body d-flex flex-column">
+          <div class="store">${d.store}</div>
+          <h2 class="h6 mb-1">${d.name}</h2>
+          <div class="price mb-3">${d.price}</div>
+          <a href="${d.url}" target="_blank" rel="sponsored noopener noreferrer" class="btn btn-primary w-100 mt-auto">Grab deal</a>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function render() {
+    const term = q.value.trim().toLowerCase();
+    const list = deals.filter(d =>
+      (cat === 'all' || (cat === 'top' ? d.off >= 50 : d.cat === cat)) &&
+      (!term || (d.name + ' ' + d.cat + ' ' + d.store).toLowerCase().includes(term))
+    );
+    grid.innerHTML = list.map(card).join('');
+    empty.style.display = list.length ? 'none' : 'block';
+  }
+
+  document.getElementById('filters').addEventListener('click', e => {
+    const b = e.target.closest('.pill'); if (!b) return;
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    b.classList.add('active'); cat = b.dataset.cat; render();
+  });
+  q.addEventListener('input', render);
+  render();
+</script>
+</body>
+</html>
