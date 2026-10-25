@@ -1,120 +1,181 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DealDekho - Best Deals on Fashion & Electronics</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DealDekho — Best Myntra Loot Deals</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 <style>
-  :root { --primary:#ff3e6c; --primary-dark:#e02a58; --ink:#1a1a1a; --soft:#fff1f4; }
-  body { font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:#fafafa; }
-  .navbar { background:var(--primary); }
-  .navbar-brand { font-weight:700; letter-spacing:.2px; }
-  .hero { background:var(--soft); }
-  .hero .search { max-width:520px; }
-  .btn-primary { background:var(--primary); border-color:var(--primary); font-weight:600; }
-  .btn-primary:hover, .btn-primary:focus { background:var(--primary-dark); border-color:var(--primary-dark); }
-  .pill { border:1px solid #ddd; background:#fff; border-radius:999px; padding:.4rem 1rem; font-size:.9rem; font-weight:600; color:var(--ink); }
-  .pill.active { background:var(--primary); border-color:var(--primary); color:#fff; }
-  .pill:focus-visible, .btn:focus-visible { outline:3px solid #1a1a1a; outline-offset:2px; }
-  .product-card { border:1px solid #eee; border-radius:12px; overflow:hidden; height:100%; transition:transform .2s, box-shadow .2s; }
-  .product-card:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,.08); }
-  .thumb { aspect-ratio:4/3; background:var(--soft); display:flex; align-items:center; justify-content:center; font-size:2.5rem; position:relative; }
-  .thumb img { width:100%; height:100%; object-fit:cover; }
-  .badge-off { position:absolute; top:10px; left:10px; background:var(--primary); color:#fff; font-size:.8rem; font-weight:700; padding:.25rem .6rem; border-radius:6px; }
-  .store { font-size:.8rem; color:#6c757d; }
-  .price { font-size:1.15rem; font-weight:700; }
-  #empty { display:none; }
-  @media (prefers-reduced-motion: reduce) { .product-card { transition:none; } }
+:root{
+  --p:#ff3e6c; --p2:#8b5cf6; --p3:#06b6d4;
+  --ink:#0a0a0f; --card:rgba(255,255,255,.85); --bg:#fbf6f7; --border:rgba(0,0,0,.06); --muted:#71717a;
+  --shadow:0 20px 60px rgba(0,0,0,.08);
+}
+[data-theme="dark"]{
+  --ink:#fafafa; --card:rgba(23,23,27,.8); --bg:#09090b; --border:rgba(255,255,255,.08); --muted:#a1a1aa;
+  --shadow:0 20px 60px rgba(0,0,0,.5);
+}
+*{font-family:'Plus Jakarta Sans',system-ui} body{ background:var(--bg); color:var(--ink); overflow-x:hidden; transition:background .5s, color .5s; }
+body::before{ content:""; position:fixed; inset:0; z-index:-2; background:
+  radial-gradient(800px 500px at 10% -10%, rgba(255,62,108,.18), transparent),
+  radial-gradient(700px 500px at 90% 0%, rgba(139,92,246,.18), transparent),
+  radial-gradient(600px 400px at 50% 120%, rgba(6,182,214,.12), transparent); filter:blur(0px); animation:meshMove 12s infinite alternate; }
+@keyframes meshMove{ 0%{ transform:translate(0,0)} 100%{ transform:translate(30px,20px) scale(1.05)} }
+
+/* LOGO */
+.logo{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.7rem; letter-spacing:-1px; display:flex; gap:10px; align-items:center; }
+.logo-mark{ width:40px; height:40px; border-radius:14px; background:conic-gradient(from 0deg, var(--p), var(--p2), var(--p3), var(--p)); display:grid; place-items:center; color:#fff; font-weight:800; box-shadow:0 10px 30px rgba(255,62,108,.35); animation:spinSlow 6s linear infinite; }
+@keyframes spinSlow{ to{ transform:rotate(360deg) } }
+.logo-text b{ background:linear-gradient(135deg,var(--p),var(--p2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+/* NAV */
+.navbar{ backdrop-filter:blur(22px) saturate(1.5); background:color-mix(in srgb, var(--card) 70%, transparent); border-bottom:1px solid var(--border); }
+.btn-grad{ background:linear-gradient(135deg,var(--p),var(--p2)); border:0; color:#fff; font-weight:800; border-radius:999px; padding:.7rem 1.4rem; position:relative; overflow:hidden; transition:.3s; box-shadow:0 12px 30px rgba(255,62,108,.3); }
+.btn-grad::after{ content:""; position:absolute; inset:0; background:linear-gradient(135deg,transparent,rgba(255,255,255,.3),transparent); transform:translateX(-100%); transition:.6s; }
+.btn-grad:hover::after{ transform:translateX(100%); } .btn-grad:hover{ transform:translateY(-2px) scale(1.02); color:#fff; box-shadow:0 18px 40px rgba(255,62,108,.4); }
+.icon-btn{ width:44px; height:44px; border-radius:999px; border:1px solid var(--border); background:var(--card); backdrop-filter:blur(10px); display:grid; place-items:center; transition:.25s; } .icon-btn:hover{ transform:rotate(12deg) scale(1.08); }
+
+/* HERO */
+.hero{ padding:80px 0 30px; position:relative; } .hero h1{ font-size:clamp(2.2rem,6vw,3.8rem); font-weight:800; line-height:.95; letter-spacing:-1.8px; }
+.grad{ background:linear-gradient(135deg,var(--p),var(--p2),var(--p3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-size:200% 200%; animation:gradShift 4s ease infinite; }
+@keyframes gradShift{ 0%,100%{ background-position:0% 50%} 50%{ background-position:100% 50%} }
+.typewriter{ display:inline-block; border-right:3px solid var(--p); white-space:nowrap; overflow:hidden; animation:typing 2.5s steps(20), blink .7s infinite; }
+@keyframes typing{ from{ width:0 } to{ width:100% } } @keyframes blink{ 50%{ border-color:transparent } }
+.search-wrap{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:999px; padding:7px; box-shadow:var(--shadow); max-width:600px; transition:.4s; } .search-wrap:focus-within{ transform:scale(1.02); border-color:var(--p); box-shadow:0 20px 50px rgba(255,62,108,.2); }
+.search-wrap input{ border:0; background:transparent; box-shadow:none !important; }
+.pill{ border:1px solid var(--border); background:var(--card); backdrop-filter:blur(10px); border-radius:999px; padding:.55rem 1.2rem; font-weight:700; font-size:.9rem; transition:.25s; cursor:pointer; } .pill.active{ background:var(--ink); color:var(--bg); transform:scale(1.06); box-shadow:0 10px 20px rgba(0,0,0,.15); }
+.pill:hover{ transform:translateY(-3px); }
+
+/* CARDS - ADVANCE */
+.product-card{ background:var(--card); backdrop-filter:blur(16px); border:1px solid var(--border); border-radius:24px; overflow:hidden; height:100%; box-shadow:var(--shadow); transform-style:preserve-3d; transition:transform .5s cubic-bezier(.34,1.56,.64,1), box-shadow .5s; will-change:transform; }
+.product-card:hover{ box-shadow:0 30px 60px rgba(0,0,0,.18); }
+.thumb{ aspect-ratio:4/5; background:linear-gradient(180deg, color-mix(in srgb, var(--p) 8%, transparent), var(--card)); position:relative; overflow:hidden; }
+.thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.2,.8,.2,1); }
+.product-card:hover .thumb img{ transform:scale(1.12) rotate(.6deg); }
+.badge-off{ position:absolute; top:14px; left:14px; background:linear-gradient(135deg,var(--p),var(--p2)); color:#fff; font-size:.78rem; font-weight:800; padding:7px 12px; border-radius:999px; letter-spacing:.3px; box-shadow:0 8px 20px rgba(255,62,108,.4); animation:pulse 2s infinite; }
+@keyframes pulse{ 0%,100%{ transform:scale(1)} 50%{ transform:scale(1.05)} }
+.price{ font-size:1.3rem; font-weight:800; letter-spacing:-.6px; }
+
+/* REVEAL */
+.reveal{ opacity:0; transform:translateY(30px) scale(.98); transition:.8s cubic-bezier(.2,.8,.2,1); } .reveal.in{ opacity:1; transform:translateY(0) scale(1); }
+
+/* FLOAT TG */
+.float-tg{ position:fixed; bottom:24px; right:24px; z-index:1050; border-radius:999px; padding:16px 26px; background:linear-gradient(135deg,#2AABEE,#8b5cf6); color:#fff; font-weight:800; letter-spacing:.3px; box-shadow:0 20px 40px rgba(42,171,238,.45); animation:float 3s ease-in-out infinite; } .float-tg:hover{ color:#fff; transform:translateY(-4px) scale(1.05); }
+@keyframes float{ 0%,100%{ transform:translateY(0)} 50%{ transform:translateY(-6px)} }
 </style>
 </head>
 <body>
-<nav class="navbar navbar-dark">
-  <div class="container"><a class="navbar-brand" href="#">DealDekho</a></div>
-</nav>
 
-<header class="hero py-5 text-center">
-  <div class="container">
-    <h1 class="h2 fw-bold">Best deals on top brands</h1>
-    <p class="text-muted mb-4">Fashion, electronics and more. Prices change fast, so grab it early.</p>
-    <div class="input-group search mx-auto">
-      <input id="q" type="search" class="form-control" placeholder="Search for products..." aria-label="Search products">
+<nav class="navbar sticky-top">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="logo" href="#"><div class="logo-mark">D</div><div class="logo-text">Deal<span><b>Dekho</b></span></div></a>
+    <div class="d-flex gap-2 align-items-center">
+      <a href="https://t.me/dealdekhosite" target="_blank" class="btn-grad d-none d-md-inline">🚀 Join @dealdekhosite</a>
+      <button class="icon-btn" id="themeBtn">🌙</button>
+      <button class="icon-btn" data-bs-toggle="offcanvas" data-bs-target="#menu">☰</button>
     </div>
   </div>
-</header>
+</nav>
 
-<main class="container py-4">
-  <div id="filters" class="d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Categories">
-    <button class="pill active" data-cat="all">All Deals</button>
-    <button class="pill" data-cat="top">Top Deals</button>
-    <button class="pill" data-cat="Fashion">Fashion</button>
-    <button class="pill" data-cat="Electronics">Electronics</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="menu" style="background:var(--card); backdrop-filter:blur(20px); border-left:1px solid var(--border)">
+  <div class="offcanvas-header"><div class="logo"><div class="logo-mark">D</div><div class="logo-text">Deal<b>Dekho</b></div></div><button class="btn-close" data-bs-dismiss="offcanvas"></button></div>
+  <div class="offcanvas-body">
+    <div class="d-grid gap-2">
+      <a class="pill text-center" href="#">🏠 Home</a>
+      <a class="pill text-center" href="#products">🛍️ 9 Live Deals</a>
+      <a class="pill text-center active" href="https://t.me/dealdekhosite" target="_blank">📢 @dealdekhosite — Join Now</a>
+      <a class="pill text-center" href="#">⚡ Under ₹500 Loot</a>
+      <a class="pill text-center" href="#">👟 Shoes Under ₹999</a>
+    </div>
+    <div class="mt-4 p-4 rounded-4" style="background:linear-gradient(135deg, var(--p) 0%, var(--p2) 100%); color:#fff">
+      <h5 class="fw-bold">Loot sabse pehle Telegram pe!</h5><p class="small opacity-90">Website se 10 min pehle deal aati hai.</p>
+      <a href="https://t.me/dealdekhosite" target="_blank" class="btn btn-light rounded-pill w-100 fw-bold">Join @dealdekhosite</a>
+      <small class="d-block mt-2 opacity-75">10k+ members already joined</small>
+    </div>
   </div>
+</div>
 
-  <div id="grid" class="row g-4"></div>
-  <p id="empty" class="text-center text-muted py-5">No deals match your search. Try another word.</p>
-
-  <p class="text-muted small mt-5 mb-0">Disclosure: some links on this page are affiliate links. We may earn a small commission if you buy, at no extra cost to you. Prices and discounts can change on the store's site.</p>
-</main>
-
-<script>
-  // Add new deals here. "img" is optional: paste a direct image URL, or leave it empty.
-  const deals = [
-    {name: 'Roadster Men Round Neck T-shirt - 70% OFF', cat: 'top', off: 70, store: 'Myntra', link: 'https://myntr.it/4L5KB8m', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/1700944/2019/6/8/8d1f9a6a-8f91-48a7-a2d2-9b7c1b8b0b5b1591481195000-Roadster-Men-Tshirts-9521591481192735-1.jpg', price: 499, mrp: 1499},
-{name: 'HRX by Hrithik Men Running Shoes - Best Seller', cat: 'fashion', off: 55, store: 'Myntra', link: 'https://myntr.it/w8mWxsM', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2502366/2018/3/14/11520892347961-HRX-by-Hrithik-Roshan-Men-Shoes-1661520892347733-1.jpg', price: 1999, mrp: 4499},
-{name: 'boAt Airdopes 131 - Myntra Bestseller', cat: 'electronics', off: 65, store: 'Myntra', link: 'https://bitli.in/RPHxvmm', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/1983516/2022/6/10/1e9f9b1c-0f0a-4f8a-8a5a-1b8b0b5b0b5b1654840000000-boAt-Headphones-1231654840000000-1.jpg', price: 1299, mrp: 2990},
-{name: 'Fastrack Reflex Smartwatch - 75% Loot', cat: 'top', off: 75, store: 'Myntra', link: 'https://fktr.in/E5Qwr70', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2023/5/8/3a9f9b1c-0f0a-4f8a-8a5a-1b8b0b5b0b5b1683530000000-Fastrack-Watches-1231683530000000-1.jpg', price: 1899, mrp: 7995},
-{name: 'Levis Skinny Fit Jeans - Under 1500', cat: 'fashion', off: 50, store: 'Myntra', link: 'https://myntr.it/h3o9Yxe', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/10077609/2019/6/20/1e9f9b1c-0f0a-4f8a-8a5a-1b8b0b5b0b5b1561010000000-Levis-Jeans-1231561010000000-1.jpg', price: 1499, mrp: 2999},
-{name: 'Lavie Women Handbag - Min 60% OFF', cat: 'fashion', off: 60, store: 'Myntra', link: 'https://myntr.it/e355vtl', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2022/5/8/1e9f9b1c-0f0a-4f8a-8a5a-1b8b0b5b0b5b1651900000000-Lavie-Handbags-1231651900000000-1.jpg', price: 999, mrp: 2599},
-{name: 'Anouk Women Kurta Set - 60% OFF', cat: 'fashion', off: 60, store: 'Myntra', link: 'https://myntr.it/8aksvqK', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2022/5/8/1e9f9b1c-0f0a-4f8a-8a5a-1b8b0b5b0b5b1651900000000-Anouk-Kurta-Sets-1231651900000000-1.jpg', price: 1199, mrp: 2999},
-{name: 'Safari 55L Backpack - Travel BestSeller', cat: 'fashion', off: 60, store: 'Myntra', link: 'https://myntr.it/1LyPenQ', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2022/5/8/1e9f9b1c-0f0a-4f8a-8a5a-1b8b0b5b0b5b1651900000000-Safari-Backpacks-1231651900000000-1.jpg', price: 899, mrp: 2249},
-{name: 'Bella Vita Perfume - Under 500', cat: 'top', off: 50, store: 'Myntra', link: 'https://myntr.it/1z0oOSc', image: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2502366/2022/5/10/1e9f9b1c-0f0a-4f8a-8a5a-1b8b0b5b0b5b1652150000000-Bella-Vita-Perfume-1231652150000000-1.jpg', price: 349, mrp: 699} ];
-
-  const grid = document.getElementById('grid');
-  const empty = document.getElementById('empty');
-  const q = document.getElementById('q');
-  let cat = 'all';
-
-  function card(d) {
-    const media = d.img
-      ? `<img src="${d.img}" alt="${d.name}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${d.icon}'))">`
-      : d.icon;
-    return `<div class="col-6 col-md-4 col-lg-3">
-      <div class="card product-card">
-        <div class="thumb">${media}<span class="badge-off">${d.off}% off</span></div>
-        <div class="card-body d-flex flex-column">
-          <div class="store">${d.store}</div>
-          <h2 class="h6 mb-1">${d.name}</h2>
-          <div class="price mb-3">${d.price}</div>
-          <a href="${d.url}" target="_blank" rel="sponsored noopener noreferrer" class="btn btn-primary w-100 mt-auto">Grab deal</a>
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span class="pill active mb-3 d-inline-block reveal in">✨ Advance UI 3.0 • Live Now</span>
+        <h1 class="reveal in" style="transition-delay:.1s"><span class="typewriter">Myntra Loot</span><br><span class="grad">Curated at<br>Light Speed.</span></h1>
+        <p class="mt-3 fs-5 reveal in" style="color:var(--muted); transition-delay:.2s">9 verified 50-70% OFF deals. Modern glass design, 3D hover, dark mode. Telegram pe sabse tez.</p>
+        <div class="search-wrap d-flex mt-4 reveal in" style="transition-delay:.3s"><input id="search" class="form-control" placeholder="Search: Roadster, HRX, Levi's..."><button class="btn-grad" onclick="render()">Search</button></div>
+        <div class="d-flex gap-2 mt-4 flex-wrap reveal in" id="pills" style="transition-delay:.4s"></div>
+      </div>
+      <div class="col-lg-5">
+        <div class="p-4 rounded-4 reveal in" style="background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow); transition-delay:.3s">
+          <div class="d-flex justify-content-between"><h6 class="fw-bold">🔴 LIVE DROP @dealdekhosite</h6><span class="badge-off" style="position:static; animation:pulse 1s infinite">LIVE</span></div>
+          <div class="mt-3 d-flex gap-3"><img src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/1700944/2019/6/8/8d1f9a6a-8f91-48a7-a2d2-9b7c1b8b0b5b1591481195000-Roadster-Men-Tshirts-9521591481192735-1.jpg" style="width:72px; height:72px; border-radius:16px; object-fit:cover"><div><div class="fw-bold">Roadster Tee ₹299 • 2 sec ago</div><div class="small" style="color:var(--muted)">1.2k people bought via Telegram</div></div></div>
+          <a href="https://t.me/dealdekhosite" target="_blank" class="btn-grad w-100 mt-3 d-block text-center">⚡ Join @dealdekhosite for Fast Loot</a>
         </div>
       </div>
-    </div>`;
-  }
+    </div>
+  </div>
+</section>
 
-  function render() {
-    const term = q.value.trim().toLowerCase();
-    const list = deals.filter(d =>
-      (cat === 'all' || (cat === 'top' ? d.off >= 50 : d.cat === cat)) &&
-      (!term || (d.name + ' ' + d.cat + ' ' + d.store).toLowerCase().includes(term))
-    );
-    grid.innerHTML = list.map(card).join('');
-    empty.style.display = list.length ? 'none' : 'block';
-  }
+<main class="container pb-5"><div id="products" class="row g-3 g-md-4"></div><div id="empty" class="text-center py-5" style="display:none"><h5>No deals found</h5></div></main>
+<a href="https://t.me/dealdekhosite" target="_blank" class="float-tg">📢 @dealdekhosite</a>
 
-  document.getElementById('filters').addEventListener('click', e => {
-    const b = e.target.closest('.pill'); if (!b) return;
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-    b.classList.add('active'); cat = b.dataset.cat; render();
+<script>
+const TELEGRAM = "https://t.me/dealdekhosite";
+const products = [
+  {id:1,title:"Roadster Men Black Printed T-shirt",cat:"Tshirts",price:299,mrp:999,off:70,image:"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/1700944/2019/6/8/8d1f9a6a-8f91-48a7-a2d2-9b7c1b8b0b5b1591481195000-Roadster-Men-Tshirts-9521591481192735-1.jpg",link:"https://www.myntra.com/tshirts/roadster/roadster-men-black-printed-round-neck-t-shirt/1700944/buy"},
+  {id:2,title:"HRX by Hrithik White Running Shoes",cat:"Shoes",price:1499,mrp:3999,off:62,image:"https://assets.myntassets.com/w_540,q_90,h_720/v1/assets/images/13863164/2021/4/10/85a99a14-0a35-495c-8ea1-1a3f2c4f7d2d1618050811118-HRX-by-Hrithik-Roshan-Men-Shoes-9811618050810629-1.jpg",link:"https://www.myntra.com/casual-shoes/hrx-by-hrithik-roshan/hrx-by-hrithik-roshan-men-white-running-shoes/13863164/buy"},
+  {id:3,title:"Levis Blue Slim Fit Jeans",cat:"Jeans",price:1299,mrp:2999,off:56,image:"https://assets.myntassets.com/w_1080,q_90,h_1440/v1/assets/images/10016983/2019/6/20/04f6a1c7-5f6c-4ca3-8b43-4d0c0d6a1b3b1561021047464-Levis-Men-Jeans-4181561021046256-1.jpg",link:"https://www.myntra.com/jeans/levis/levis-men-blue-slim-fit-jeans/10016983/buy"},
+  {id:4,title:"Puma Black Sports T-shirt",cat:"Tshirts",price:699,mrp:1499,off:53,image:"https://assets.myntassets.com/w_540,q_90,h_720/v1/assets/images/11728798/2020/6/18/4d6a1c7e-8f91-48a7-a2d2-9b7c1b8b0b5b1592497197376-Puma-Men-Tshirts-6761592497196135-1.jpg",link:"https://www.myntra.com/tshirts/puma/puma-men-tshirts/11728798/buy"},
+  {id:5,title:"Safari 30L Backpack Black",cat:"Bags",price:799,mrp:2199,off:63,image:"https://assets.myntassets.com/dpr_2,q_60,w_210/c_box,q_40/h_360,q_70,w_360/v1/modern-age/asset/2024_7_31_16_34_14_156_Adobe%20Express%20-%20file%20(9).jpg",link:"https://www.myntra.com/backpacks/safari/safari-unisex-backpack/10237333/buy"},
+  {id:6,title:"Nike Dri-FIT Black Sports Tee",cat:"Tshirts",price:895,mrp:1795,off:50,image:"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/1821820/2017/8/1/11501433631562-Nike-Men-Black-Solid-Sports-T-shirt-3631501433631345-1.jpg",link:"https://www.myntra.com/tshirts/nike/nike-men-black-solid-sports-t-shirt/1821820/buy"},
+  {id:7,title:"U.S. Polo Assn. White Polo T-shirt",cat:"Tshirts",price:999,mrp:1999,off:50,image:"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2324343/2018/4/19/11524144308959-U-S-Polo-Assn-Men-White-Polo-Collar-Polo-Shirt-8091524144308784-1.jpg",link:"https://www.myntra.com/tshirts/u-s-polo-assn/u-s-polo-assn-men-white-polo-t-shirt/1981868/buy"},
+  {id:8,title:"WROGN Olive Printed T-shirt",cat:"Tshirts",price:549,mrp:1099,off:50,image:"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/11653468/2020/3/12/dc3f37b5-4f6c-4ca3-8b43-4d0c0d6a1b3b1583994812345-WROGN-Men-Tshirts-1231583994812345-1.jpg",link:"https://www.myntra.com/tshirts/wrogn/wrogn-men-olive-printed-round-neck-t-shirt/11653468/buy"},
+  {id:9,title:"Adidas Black Running Shoes",cat:"Shoes",price:2499,mrp:4999,off:50,image:"https://assets.myntassets.com/w_540,q_90,h_720/v1/assets/images/17144534/2022/2/18/8ea1e2a8-8f91-48a7-a2d2-9b7c1b8b0b5b1645171234567-ADIDAS-Men-Shoes-1231645171234567-1.jpg",link:"https://www.myntra.com/sports-shoes/adidas/adidas-men-black-running-shoes/17144534/buy"}
+];
+const cats=["All","Tshirts","Shoes","Jeans","Bags"]; let active="All";
+function renderPills(){ document.getElementById("pills").innerHTML=cats.map(c=>`<button class="pill ${active===c?'active':''}" onclick="setCat('${c}')">${c}</button>`).join(""); }
+function setCat(c){ active=c; renderPills(); render(); }
+function render(){
+  const q=document.getElementById("search").value.toLowerCase();
+  const f=products.filter(p=> (active==="All"||p.cat===active) && p.title.toLowerCase().includes(q));
+  const cont=document.getElementById("products"); const emp=document.getElementById("empty");
+  if(!f.length){ cont.innerHTML=""; emp.style.display="block"; return; } emp.style.display="none";
+  cont.innerHTML=f.map((p,i)=>`
+  <div class="col-6 col-md-4 col-lg-4">
+    <div class="product-card reveal" style="transition-delay:${i*0.07}s">
+      <div class="thumb"><span class="badge-off">${p.off}% OFF</span><img src="${p.image}" loading="lazy" alt="${p.title}"></div>
+      <div class="p-3 p-md-4">
+        <div class="store">Myntra • ${p.cat}</div>
+        <div class="fw-bold mt-1" style="font-size:1rem; line-height:1.3; height:44px; overflow:hidden">${p.title}</div>
+        <div class="d-flex align-items-baseline gap-2 mt-2"><div class="price">₹${p.price}</div><small class="text-decoration-line-through" style="color:var(--muted)">₹${p.mrp}</small></div>
+        <div class="d-grid gap-2 mt-3">
+          <a href="${p.link}" target="_blank" class="btn-grad text-center" style="padding:.65rem">View on Myntra →</a>
+          <a href="${TELEGRAM}" target="_blank" class="btn w-100 fw-bold" style="border-radius:999px; border:1px solid var(--border); background:var(--card); backdrop-filter:blur(10px)">⚡ Get on @dealdekhosite</a>
+        </div>
+      </div>
+    </div>
+  </div>`).join("");
+  observe();
+}
+// Theme
+const tBtn=document.getElementById("themeBtn"); let dark=localStorage.getItem("theme")==="dark";
+function applyTheme(){ document.documentElement.setAttribute("data-theme", dark?"dark":"light"); tBtn.textContent=dark?"☀️":"🌙"; localStorage.setItem("theme", dark?"dark":"light"); }
+tBtn.onclick=()=>{ dark=!dark; applyTheme(); }; applyTheme();
+// Reveal observer
+function observe(){ const io=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); }); },{threshold:.15}); document.querySelectorAll(".reveal").forEach(el=>io.observe(el)); }
+// 3D tilt effect for cards
+document.addEventListener("mousemove", (e)=>{
+  document.querySelectorAll(".product-card").forEach(card=>{
+    const rect=card.getBoundingClientRect();
+    const x=e.clientX-rect.left-rect.width/2; const y=e.clientY-rect.top-rect.height/2;
+    if(Math.abs(x)<300 && Math.abs(y)<300){ card.style.transform=`perspective(800px) rotateY(${x/25}deg) rotateX(${-y/25}deg) translateY(-8px)`; }
   });
-  q.addEventListener('input', render);
-  render();
+});
+document.addEventListener("mouseleave", ()=>{ document.querySelectorAll(".product-card").forEach(c=>c.style.transform=""); });
+
+renderPills(); render(); document.getElementById("search").addEventListener("input", render);
 </script>
-  <div style="text-align:center; font-size:12px; color:gray; padding:20px; margin-top:20px; background:#fff;">
-<p><b>Affiliate Disclosure:</b> This page contains affiliate links. We may earn a commission if you make a purchase through these links.</p>
-<p>© 2025 DealDekho - All Rights Reserved</p>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
