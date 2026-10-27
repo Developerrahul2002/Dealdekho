@@ -58,13 +58,25 @@ const products=[
 {id:7,title:"U.S. Polo White Polo T-shirt",cat:"Tshirts",price:999,mrp:1999,off:50,image:"https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/1981868/2019/4/16/8d1f9a6a-8f91-48a7-a2d2-9b7c1b8b0b5b1555421234567-U-S-Polo-Assn-Men-White-Polo-Collar-Polo-Shirt-8091555421234567-1.jpg",link:"https://www.myntra.com/tshirts/u-s-polo-assn/u-s-polo-assn-men-white-polo-t-shirt/1981868/buy"},
 {id:8,title:"WROGN Olive Printed T-shirt",cat:"Tshirts",price:549,mrp:1099,off:50,image:"https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/11653468/2020/3/12/7a1f3f4a-6cc8-4808-9cfe-bea2ad8d55a11583994812345-WROGN-Men-Tshirts-1231583994812345-1.jpg",link:"https://www.myntra.com/tshirts/wrogn/wrogn-men-olive-printed-round-neck-t-shirt/11653468/buy"},
 {id:9,title:"Adidas Black Running Shoes",cat:"Shoes",price:2499,mrp:4999,off:50,image:"https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/17144534/2022/2/18/7a1f3f4a-6cc8-4808-9cfe-bea2ad8d55a11645171234567-ADIDAS-Men-Shoes-1231645171234567-1.jpg",link:"https://www.myntra.com/sports-shoes/adidas/adidas-men-black-running-shoes/17144534/buy"}
+
+  {
+    id: 10,
+    title: "Ligeronation Trendy Sports Running Shoes",
+    cat: "Shoes",
+    price: 420,
+    mrp: 1999,
+    off: 79,
+    store: "Flipkart",
+    image: "https://placehold.co/400x400/fff0f3/ff3e6c?text=Sports+Shoes",
+    link: "https://fktr.in/KWgNtxd"
+  }
 ];
 
 const cats=["All","Tshirts","Shoes","Jeans","Bags"]; let active="All";
 function renderPills(){document.getElementById("pills").innerHTML=cats.map(c=>`<button class="pill ${active===c?'active':''}" onclick="setCat('${c}')">${c}</button>`).join("")}
 function setCat(c){active=c; renderPills(); render()}
 
-function cardHTML(p,i){ return `<div class="col-6 col-md-3 col-lg-2"><div class="product-card"><div class="thumb"><span class="badge-off">${p.off}% OFF</span><span class="timer" id="t${p.id}">02:59:59</span><img src="${p.image}" alt="${p.title}" onerror="imgError(this)" loading="lazy"></div><div class="card-body"><div class="store">Myntra • ${p.cat}</div><div class="card-title">${p.title}</div><div class="d-flex gap-2 align-items-center mt-1"><div class="price">₹${p.price}</div><div class="mrp">₹${p.mrp}</div></div><div class="d-grid mt-2"><a href="${p.link}" target="_blank" class="btn btn-dark btn-sm-buy">View Deal</a></div></div></div></div>`}
+function cardHTML(p,i){ return `<div class="col-6 col-md-3 col-lg-2"><div class="product-card"><div class="thumb"><span class="badge-off">${p.off}% OFF</span><span class="timer" id="t${p.id}">02:59:59</span><img src="${p.image}" alt="${p.title}" onerror="imgError(this)" loading="lazy"></div><div class="card-body"><div class="store"> ${p.store || "Myntra"} • ${p.cat}</div><div class="card-title">${p.title}</div><div class="d-flex gap-2 align-items-center mt-1"><div class="price">₹${p.price}</div><div class="mrp">₹${p.mrp}</div></div><div class="d-grid mt-2"><a href="${p.link}" target="_blank" class="btn btn-dark btn-sm-buy">View Deal</a></div></div></div></div>`}
 
 function render(){const q=document.getElementById("search").value.toLowerCase(); const f=products.filter(p=>(active==="All"||p.cat===active)&&p.title.toLowerCase().includes(q)); document.getElementById("countPill").textContent=f.length+" deals"; const cont=document.getElementById("products"); const emp=document.getElementById("empty"); if(!f.length){cont.innerHTML=""; emp.style.display="block"; return} emp.style.display="none"; cont.innerHTML=f.map((p,i)=>cardHTML(p,i)).join(""); }
 function renderTrending(){document.getElementById("trending").innerHTML=products.slice(0,3).map((p,i)=>cardHTML(p,i)).join("");}
