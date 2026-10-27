@@ -1,1 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f8fb">
+  <title>DealDekho — Flipkart Shoe Deal</title>
+  <meta name="description" content="Discover the latest hand-picked shopping deals on DealDekho.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff3e6c;
+      --accent2: #7657ff;
+      --ink: #151521;
+      --muted: #737384;
+      --page: #f7f7fb;
+      --surface: #ffffff;
+      --border: rgba(20, 20, 40, .09);
+      --shadow: 0 12px 34px rgba(24, 24, 50, .08);
+    }
+    [data-theme="dark"] {
+      --ink: #f5f5fb;
+      --muted: #b1b1c2;
+      --page: #101016;
+      --surface: #1a1a24;
+      --border: rgba(255,255,255,.10);
+      --shadow: 0 12px 34px rgba(0,0,0,.22);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      min-height: 100vh;
+    }
+    a { text-decoration: none; }
+    .site-nav {
+      position: sticky; top: 0; z-index: 20;
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+    .nav-inner {
+      min-height: 72px; display: flex; align-items: center;
+      justify-content: space-between; gap: 16px;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--ink); font-family: "Space Grotesk", sans-serif;
+      font-size: 1.35rem; font-weight: 700;
+    }
+    .brand-mark {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border-radius: 12px; color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+    .brand-name span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 9px; }
+    .icon-button {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--ink); display: grid; place-items: center; cursor: pointer;
+    }
+    .hero { padding: 42px 0 24px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--border); background: var(--surface);
+      border-radius: 999px; padding: 7px 12px; font-size: .78rem;
+      font-weight: 700; color: var(--muted);
+    }
+    .hero h1 {
+      margin: 18px 0 12px; font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.08; letter-spacing: -.055em; font-weight: 800;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p { max-width: 600px; color: var(--muted); line-height: 1.7; }
+    .section-heading {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; margin: 10px 0 18px;
+    }
+    .section-heading h2 { margin: 0; font-size: 1.25rem; font-weight: 800; }
+    .search-input {
+      max-width: 260px; width: 100%; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--ink); padding: 10px 15px; outline: none;
+    }
+    .search-input:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(118,87,255,.12); }
+    .product-card {
+      height: 100%; overflow: hidden; border-radius: 20px;
+      border: 1px solid var(--border); background: var(--surface);
+      box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-image-wrap {
+      position: relative; display: grid; place-items: center;
+      min-height: 280px; padding: 20px; background: #fff;
+    }
+    .product-image {
+      width: 100%; max-width: 340px; height: 260px; object-fit: contain;
+    }
+    .discount-badge {
+      position: absolute; left: 14px; top: 14px; border-radius: 999px;
+      padding: 6px 10px; background: var(--accent); color: white;
+      font-size: .75rem; font-weight: 800;
+    }
+    .product-content { padding: 20px; }
+    .store-label {
+      display: inline-block; color: #1767c2; background: #eaf3ff;
+      border-radius: 6px; padding: 5px 8px; font-size: .72rem;
+      font-weight: 800; letter-spacing: .04em;
+    }
+    .product-title { margin: 13px 0 8px; font-size: 1.08rem; line-height: 1.45; font-weight: 800; }
+    .product-description { color: var(--muted); font-size: .9rem; line-height: 1.65; }
+    .price-line { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+    .price { font-size: 1.65rem; font-weight: 800; }
+    .mrp { color: var(--muted); text-decoration: line-through; font-size: .95rem; }
+    .discount-text { color: #12804a; font-size: .82rem; font-weight: 800; }
+    .buy-button {
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+      width: 100%; border: 0; border-radius: 12px; padding: 13px 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; font-weight: 800; transition: opacity .2s ease;
+    }
+    .buy-button:hover { color: #fff; opacity: .92; }
+    .affiliate-note { margin: 12px 0 0; color: var(--muted); font-size: .72rem; line-height: 1.55; }
+    .empty-state {
+      display: none; padding: 35px 10px; text-align: center;
+      border: 1px dashed var(--border); border-radius: 16px; color: var(--muted);
+    }
+    footer { margin-top: 55px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .8rem; }
+    @media (max-width: 575px) {
+      .hero { padding-top: 30px; }
+      .nav-inner { min-height: 64px; }
+      .brand { font-size: 1.15rem; }
+      .section-heading { align-items: stretch; flex-direction: column; }
+      .search-input { max-width: none; }
+      .product-image-wrap { min-height: 230px; }
+      .product-image { height: 210px; }
+      .product-content { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a class="brand" href="./" aria-label="DealDekho home">
+        <span class="brand-mark">D</span>
+        <span class="brand-name">Deal<span>Dekho</span></span>
+      </a>
+      <div class="nav-actions">
+        <span class="eyebrow d-none d-sm-inline-flex">Hand-picked deals</span>
+        <button class="icon-button" id="themeButton" type="button" aria-label="Toggle dark mode">🌙</button>
+      </div>
+    </div>
+  </header>
 
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">✨ Simple shopping. Smart deals.</span>
+      <h1>Find your next <span class="gradient-text">great deal.</span></h1>
+      <p>DealDekho brings selected shopping offers together in one place. Check the product details and latest price on the retailer’s website before ordering.</p>
+    </div>
+  </section>
+
+  <main class="container pb-4">
+    <div class="section-heading">
+      <div>
+        <h2>🔥 Featured Deal</h2>
+        <div class="text-secondary small mt-1" id="dealCount">1 product</div>
+      </div>
+      <input id="productSearch" class="search-input" type="search" placeholder="Search products..." aria-label="Search products">
+    </div>
+
+    <div id="productGrid" class="row g-3"></div>
+    <div id="emptyState" class="empty-state">No product found. Try another search.</div>
+
+    <p class="small text-secondary mt-4 mb-0">
+      Price and availability may change. Please confirm the final details on Flipkart before purchasing.
+    </p>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="mb-1"><strong>Affiliate disclosure:</strong> DealDekho may earn a commission from qualifying purchases made through affiliate links, at no extra cost to you.</p>
+      <p class="mb-0">Product price shown is based on the provided screenshot and may not be current.</p>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    // Product details from the user's screenshot. Update price/image after verifying the live listing.
+    const products = [
+      {
+        id: 10,
+        title: "Ligeronation Exclusive Trendy Sports Running Shoes",
+        category: "Shoes",
+        store: "Flipkart",
+        price: 420,
+        mrp: 1999,
+        discount: 79,
+        // Temporary placeholder image. We will replace this with the product image in the next step.
+        image: "https://placehold.co/600x600/fff0f3/ff3e6c?text=Sports+Shoes",
+        link: "https://fktr.in/KWgNtxd"
+      }
+    ];
+
+    const productGrid = document.getElementById("productGrid");
+    const searchInput = document.getElementById("productSearch");
+    const emptyState = document.getElementById("emptyState");
+    const dealCount = document.getElementById("dealCount");
+    const themeButton = document.getElementById("themeButton");
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, function (character) {
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[character];
+      });
+    }
+
+    function renderProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filteredProducts = products.filter(function (product) {
+        return (product.title + " " + product.category + " " + product.store)
+          .toLowerCase().includes(query);
+      });
+
+      dealCount.textContent = filteredProducts.length + (filteredProducts.length === 1 ? " product" : " products");
+      emptyState.style.display = filteredProducts.length ? "none" : "block";
+
+      productGrid.innerHTML = filteredProducts.map(function (product) {
+        const title = escapeHTML(product.title);
+        const image = escapeHTML(product.image);
+        const link = escapeHTML(product.link);
+        const category = escapeHTML(product.category);
+        const store = escapeHTML(product.store);
+        const discount = Number(product.discount);
+        const price = Number(product.price).toLocaleString("en-IN");
+        const mrp = Number(product.mrp).toLocaleString("en-IN");
+
+        return `
+          <div class="col-12 col-sm-6 col-lg-4">
+            <article class="product-card">
+              <div class="product-image-wrap">
+                <span class="discount-badge">${discount}% OFF*</span>
+                <img class="product-image"
+                     src="${image}"
+                     alt="${title}"
+                     loading="lazy"
+                     onerror="this.onerror=null;this.src='https://placehold.co/600x600/fff0f3/ff3e6c?text=Sports+Shoes';">
+              </div>
+              <div class="product-content">
+                <span class="store-label">${store} · ${category}</span>
+                <h3 class="product-title">${title}</h3>
+                <p class="product-description">Men's sports shoes for running, gym and training. Check available sizes and product details on Flipkart.</p>
+                <div class="price-line">
+                  <span class="price">₹${price}</span>
+                  <span class="mrp">₹${mrp}</span>
+                  <span class="discount-text">${discount}% off*</span>
+                </div>
+                <a class="buy-button" href="${link}" target="_blank" rel="sponsored nofollow noopener">
+                  View deal on Flipkart <span aria-hidden="true">↗</span>
+                </a>
+                <p class="affiliate-note">*Price/discount came from the supplied screenshot and may change. Affiliate link: we may earn from qualifying purchases.</p>
+              </div>
+            </article>
+          </div>`;
+      }).join("");
+    }
+
+    function setTheme(isDark) {
+      document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+      themeButton.textContent = isDark ? "☀️" : "🌙";
+      themeButton.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+      try { localStorage.setItem("dealdekho-theme", isDark ? "dark" : "light"); } catch (error) {}
+    }
+
+    let darkMode = false;
+    try { darkMode = localStorage.getItem("dealdekho-theme") === "dark"; } catch (error) {}
+    setTheme(darkMode);
+
+    themeButton.addEventListener("click", function () {
+      darkMode = !darkMode;
+      setTheme(darkMode);
+    });
+    searchInput.addEventListener("input", renderProducts);
+
+    renderProducts();
+  </script>
+</body>
+</html>
