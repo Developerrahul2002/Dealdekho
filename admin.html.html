@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DealDekho — Admin Product & Telegram Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff3e6c;
+      --accent2: #7657ff;
+      --bg: #0f1016;
+      --card: #181a24;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f3f4f8;
+      --muted: #9ca3af;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      padding-bottom: 60px;
+    }
+    .navbar {
+      background: rgba(24, 26, 36, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      color: #fff;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    }
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .form-control, .form-select {
+      background: #10121a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+    .form-control:focus, .form-select:focus {
+      background: #10121a;
+      color: var(--text);
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(118, 87, 255, 0.2);
+    }
+    .btn-gradient {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-weight: 700;
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 18px;
+    }
+    .btn-gradient:hover { opacity: 0.92; color: #fff; }
+    
+    /* Live Preview Card */
+    .preview-card {
+      background: #ffffff;
+      color: #151521;
+      border-radius: 20px;
+      overflow: hidden;
+      max-width: 350px;
+      margin: 0 auto;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.4);
+    }
+    .preview-img-box {
+      position: relative;
+      height: 230px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f5;
+    }
+    .preview-img-box img {
+      max-height: 195px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .preview-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 99px;
+    }
+    .preview-body { padding: 18px; }
+    .preview-store {
+      display: inline-block;
+      background: #eaf3ff;
+      color: #1767c2;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .preview-title {
+      font-size: 1rem;
+      font-weight: 800;
+      margin: 10px 0 6px;
+      line-height: 1.4;
+    }
+    .preview-price {
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+    .preview-mrp {
+      color: #737384;
+      text-decoration: line-through;
+      font-size: 0.9rem;
+      margin-left: 6px;
+    }
+    .preview-off {
+      color: #12804a;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-left: 6px;
+    }
+    pre.code-box {
+      background: #090a0f;
+      color: #6ee7b7;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.84rem;
+      max-height: 280px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .status-pill {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar py-3 mb-4">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-2">
+      <span class="brand-badge">DealDekho</span>
+      <span class="fw-bold">Product Generator Studio</span>
+    </div>
+    <a href="./" class="btn btn-sm btn-outline-light rounded-pill px-3">← Back to Live Website</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row g-4">
+    <!-- Left Column: Input Form -->
+    <div class="col-lg-7">
+      <div class="panel">
+        <h5 class="fw-bold mb-3">1. Product Details Bharein</h5>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label">Product ID</label>
+            <input type="number" id="pId" class="form-control" value="12">
+          </div>
+          <div class="col-md-9">
+            <label class="form-label">Product Title</label>
+            <input type="text" id="pTitle" class="form-control" placeholder="e.g. Campus Men's Hurricane Running Shoes" value="Ligeronation Exclusive Trendy Sports Running Shoes">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Store Name</label>
+            <select id="pStore" class="form-select">
+              <option value="Flipkart">Flipkart</option>
+              <option value="Amazon">Amazon</option>
+              <option value="Myntra">Myntra</option>
+              <option value="Ajio">Ajio</option>
+              <option value="Meesho">Meesho</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Category</label>
+            <select id="pCat" class="form-select">
+              <option value="Shoes">Shoes</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Loot Deals">Loot Deals</option>
+              <option value="Watches">Watches</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Top Badge</label>
+            <input type="text" id="pBadge" class="form-control" value="LOOT DEAL">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Deal Price (₹)</label>
+            <input type="number" id="pPrice" class="form-control" value="420">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Original MRP (₹)</label>
+            <input type="number" id="pMrp" class="form-control" value="1999">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Auto Discount (%)</label>
+            <input type="number" id="pDisc" class="form-control" value="79" readonly>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Rating (Out of 5)</label>
+            <input type="number" step="0.1" id="pRating" class="form-control" value="4.2">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Reviews Count</label>
+            <input type="text" id="pReviews" class="form-control" value="2.4k">
+          </div>
+
+          <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label class="form-label mb-0">Product Image URL</label>
+              <span id="imgStatus" class="status-pill bg-secondary text-white">Checking...</span>
+            </div>
+            <div class="input-group">
+              <input type="url" id="pImage" class="form-control" placeholder="Paste Flipkart/Amazon image URL (.jpg, .webp, .png)" value="https://rukminim2.flixcart.com/image/832/832/xif0q/shoe/7/z/r/8-white-leaf-8-urbanbox-white-black-original-imagvgf4cuzs2hrw.jpeg">
+              <button class="btn btn-outline-warning" type="button" id="proxyBtn" title="Agar Flipkart image block ho rahi hai to ispe click karein">⚡ Apply Image Unblocker</button>
+            </div>
+            <div class="form-text text-secondary small mt-1">
+              Tip: Agar image load na ho, toh <b>"Apply Image Unblocker"</b> button dabayein—ye image ko global CDN proxy se wrap kar dega jo kabhi block nahi hoti.
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Affiliate Link (fktr.in / amzn.to)</label>
+            <input type="url" id="pLink" class="form-control" value="https://fktr.in/KWgNtxd">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Short Description</label>
+            <input type="text" id="pDesc" class="form-control" value="Lightweight breathable sports shoes for running, gym & daily wear.">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Live Preview & Generated Code -->
+    <div class="col-lg-5">
+      <div class="panel mb-4 text-center">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="fw-bold mb-0">2. Live Card Preview</h6>
+          <span class="badge bg-success">Real-time</span>
+        </div>
+
+        <div class="preview-card text-start">
+          <div class="preview-img-box">
+            <span class="preview-badge" id="prevBadge">79% OFF</span>
+            <img id="prevImg" src="" alt="Preview" referrerpolicy="no-referrer">
+          </div>
+          <div class="preview-body">
+            <span class="preview-store" id="prevStore">Flipkart · Shoes</span>
+            <div class="preview-title" id="prevTitle">Product Title</div>
+            <div class="text-secondary small mb-2" id="prevDesc">Description</div>
+            <div class="mb-3">
+              <span class="preview-price" id="prevPrice">₹420</span>
+              <span class="preview-mrp" id="prevMrp">₹1,999</span>
+              <span class="preview-off" id="prevOff">79% off</span>
+            </div>
+            <a id="prevLink" href="#" target="_blank" class="btn btn-gradient w-100">View Deal on Store ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Website Code Output -->
+      <div class="panel mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="fw-bold mb-0">3. Website Code (For index.html)</h6>
+          <button class="btn btn-sm btn-gradient" id="copyCodeBtn">📋 Copy Code</button>
+        </div>
+        <p class="small text-secondary mb-2">Ise copy karke <code>index.html</code> ke <code>const products = [</code> ke andar paste karein:</p>
+        <pre class="code-box mb-0" id="codeOutput"></pre>
+      </div>
+
+      <!-- Telegram Post Output -->
+      <div class="panel">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="fw-bold mb-0">4. Ready Telegram Channel Post</h6>
+          <button class="btn btn-sm btn-info text-white fw-bold" id="copyTgBtn">✈️ Copy Telegram Post</button>
+        </div>
+        <p class="small text-secondary mb-2">Seedha apne <b>@dealdekhosite</b> channel par post karne ke liye:</p>
+        <pre class="code-box mb-0" id="tgOutput" style="color: #93c5fd;"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const fields = ["pId", "pTitle", "pStore", "pCat", "pBadge", "pPrice", "pMrp", "pDisc", "pRating", "pReviews", "pImage", "pLink", "pDesc"];
+  const els = {};
+  fields.forEach(id => els[id] = document.getElementById(id));
+
+  const prevImg = document.getElementById("prevImg");
+  const imgStatus = document.getElementById("imgStatus");
+
+  function updateAll() {
+    const price = Number(els.pPrice.value) || 0;
+    const mrp = Number(els.pMrp.value) || 1;
+    const disc = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
+    els.pDisc.value = disc;
+
+    // Update Preview
+    document.getElementById("prevBadge").textContent = `${disc}% OFF · ${els.pBadge.value}`;
+    document.getElementById("prevStore").textContent = `${els.pStore.value} · ${els.pCat.value}`;
+    document.getElementById("prevTitle").textContent = els.pTitle.value;
+    document.getElementById("prevDesc").textContent = els.pDesc.value;
+    document.getElementById("prevPrice").textContent = `₹${price.toLocaleString("en-IN")}`;
+    document.getElementById("prevMrp").textContent = `₹${mrp.toLocaleString("en-IN")}`;
+    document.getElementById("prevOff").textContent = `${disc}% off`;
+    document.getElementById("prevLink").href = els.pLink.value;
+
+    // Test Image
+    const rawImg = els.pImage.value.trim();
+    prevImg.src = rawImg;
+
+    // Generate JS Object for index.html
+    const productObj = {
+      id: Number(els.pId.value) || Date.now(),
+      title: els.pTitle.value.trim(),
+      category: els.pCat.value,
+      store: els.pStore.value,
+      price: price,
+      mrp: mrp,
+      discount: disc,
+      rating: Number(els.pRating.value) || 4.2,
+      reviews: els.pReviews.value.trim(),
+      badge: els.pBadge.value.trim(),
+      description: els.pDesc.value.trim(),
+      image: rawImg,
+      link: els.pLink.value.trim()
+    };
+
+    document.getElementById("codeOutput").textContent = JSON.stringify(productObj, null, 2) + ",";
+
+    // Generate Telegram Post
+    const savings = (mrp - price).toLocaleString("en-IN");
+    const tgText = `🔥 *${els.pBadge.value}: ${disc}% OFF on ${els.pStore.value}!* 🔥\n\n` +
+      `👟 *${els.pTitle.value}*\n\n` +
+      `💰 *Deal Price:* ₹${price.toLocaleString("en-IN")} ✅\n` +
+      `❌ *MRP:* ~₹${mrp.toLocaleString("en-IN")}~ (Save ₹${savings})\n` +
+      `⭐ *Rating:* ${els.pRating.value}/5 (${els.pReviews.value} reviews)\n\n` +
+      `🛒 *Buy Now:* ${els.pLink.value.trim()}\n\n` +
+      `🌐 *More Deals:* https://developerrahul2002.github.io/Dealdekho/\n` +
+      `📢 *Join Telegram:* https://t.me/dealdekhosite`;
+
+    document.getElementById("tgOutput").textContent = tgText;
+  }
+
+  // Image Load / Error Listener
+  prevImg.onload = () => {
+    imgStatus.className = "status-pill bg-success text-white";
+    imgStatus.textContent = "✓ Image Working!";
+  };
+  prevImg.onerror = () => {
+    imgStatus.className = "status-pill bg-danger text-white";
+    imgStatus.textContent = "✗ Image Blocked/Invalid — Click Unblocker!";
+  };
+
+  // Image Unblocker Proxy Button (Uses wsrv.nl free global image CDN proxy)
+  document.getElementById("proxyBtn").addEventListener("click", () => {
+    let url = els.pImage.value.trim();
+    if (!url) return;
+    if (!url.includes("wsrv.nl")) {
+      els.pImage.value = `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=600&output=webp`;
+      updateAll();
+    }
+  });
+
+  // Copy Buttons
+  document.getElementById("copyCodeBtn").addEventListener("click", function() {
+    navigator.clipboard.writeText(document.getElementById("codeOutput").textContent);
+    this.textContent = "✅ Copied!";
+    setTimeout(() => this.textContent = "📋 Copy Code", 2000);
+  });
+
+  document.getElementById("copyTgBtn").addEventListener("click", function() {
+    navigator.clipboard.writeText(document.getElementById("tgOutput").textContent);
+    this.textContent = "✅ Copied Post!";
+    setTimeout(() => this.textContent = "✈️ Copy Telegram Post", 2000);
+  });
+
+  fields.forEach(id => els[id].addEventListener("input", updateAll));
+  updateAll();
+</script>
+</body>
+</html>
