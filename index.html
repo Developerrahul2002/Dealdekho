@@ -91,7 +91,6 @@
       padding: 0 20px;
     }
 
-    /* SVG Icon utility */
     .icon {
       width: 18px;
       height: 18px;
@@ -1153,8 +1152,8 @@
     "use strict";
 
     /* ==========================================================
-       PRODUCT DEALS DATA
-       Includes user's specified shoes deals + live links
+        PRODUCT DEALS DATA
+        Includes user's specified shoes deals + live links
     ========================================================== */
     const products = [
       {
@@ -1192,7 +1191,7 @@
     ];
 
     /* ==========================================================
-       DOM REFERENCES
+        DOM REFERENCES
     ========================================================== */
     const dealsGrid = document.getElementById("dealsGrid");
     const searchInput = document.getElementById("searchInput");
@@ -1208,7 +1207,7 @@
     let activeCategory = "all";
 
     /* ==========================================================
-       XSS PROTECTION UTILITY
+        XSS PROTECTION UTILITY
     ========================================================== */
     function sanitize(str) {
       return String(str).replace(/[&<>"']/g, function (match) {
@@ -1223,7 +1222,7 @@
     }
 
     /* ==========================================================
-       RENDER DEALS
+        RENDER DEALS
     ========================================================== */
     function renderDeals() {
       const query = searchInput.value.trim().toLowerCase();
@@ -1232,12 +1231,12 @@
       // Filter
       let filtered = products.filter(function (item) {
         const matchesCategory = (activeCategory === "all") || 
-                                (item.category === activeCategory) ||
-                                (item.tags && item.tags.includes(activeCategory));
+                              (item.category === activeCategory) ||
+                              (item.tags && item.tags.includes(activeCategory));
 
         const matchesQuery = (item.title + " " + item.category + " " + item.store + " " + item.description)
-                              .toLowerCase()
-                              .includes(query);
+                            .toLowerCase()
+                            .includes(query);
 
         return matchesCategory && matchesQuery;
       });
@@ -1331,7 +1330,7 @@
     }
 
     /* ==========================================================
-       CATEGORY TABS
+        CATEGORY TABS
     ========================================================== */
     const categoryTabs = document.getElementById("categoryTabs");
     categoryTabs.addEventListener("click", function (e) {
@@ -1352,7 +1351,7 @@
     }
 
     /* ==========================================================
-       SEARCH BAR & CLEAR
+        SEARCH BAR & CLEAR
     ========================================================== */
     searchInput.addEventListener("input", function() {
       clearSearch.style.display = this.value ? "block" : "none";
@@ -1369,7 +1368,7 @@
     sortSelect.addEventListener("change", renderDeals);
 
     /* ==========================================================
-       LIVE COUNTDOWN TIMER
+        LIVE COUNTDOWN TIMER
     ========================================================== */
     let countdownSeconds = 4 * 3600 + 32 * 60 + 48; // 4h 32m 48s
     const cdHours = document.getElementById("cdHours");
@@ -1392,7 +1391,7 @@
     }, 1000);
 
     /* ==========================================================
-       THEME TOGGLE WITH LOCALSTORAGE
+        THEME TOGGLE WITH LOCALSTORAGE
     ========================================================== */
     function setTheme(dark) {
       if (dark) {
@@ -1425,7 +1424,7 @@
     });
 
     /* ==========================================================
-       TOAST & CLIPBOARD
+        TOAST & CLIPBOARD
     ========================================================== */
     function showToast(msg) {
       toastMessage.textContent = msg;
